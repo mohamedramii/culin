@@ -113,7 +113,7 @@ export function CulinCta() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="md:col-span-2">
-              <img src="./src/assets/logo.png" alt="Culin" className="h-12 w-auto" />
+              <img src={new URL("../../assets/logo.png", import.meta.url).href} alt="Culin" className="h-12 w-auto" />
               <p className="font-body text-white/30 text-sm max-w-sm mt-4" style={{ fontWeight: 300, lineHeight: 1.8 }}>
                 More than wood. Crafting bespoke kitchens and dressing rooms that merge natural beauty with modern design.
               </p>

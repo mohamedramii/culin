@@ -79,7 +79,7 @@ export function CulinNavbar() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <img id="navbar-logo" src="./src/assets/logo.png" alt="Culin" className="h-12 w-auto" style={{ opacity: logoRevealed ? 1 : 0 }} />
+          <img id="navbar-logo" src={new URL("../../assets/logo.png", import.meta.url).href} alt="Culin" className="h-12 w-auto" style={{ opacity: logoRevealed ? 1 : 0 }} />
         </Link>
 
         <div className="hidden md:flex items-center gap-10">
