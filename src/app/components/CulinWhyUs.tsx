@@ -39,9 +39,12 @@ export function CulinWhyUs() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // CULIN background text slides down from top
+      const isMobile = window.innerWidth < 1024;
+      const startTop = isMobile ? "-100%" : "-100%";
+
       gsap.fromTo(
         ".whyus-bg-text",
-        { top: "-100%" },
+        { top: startTop },
         {
           top: "0%",
           ease: "none",
@@ -115,7 +118,7 @@ export function CulinWhyUs() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#f5f0eb] py-32 px-6 lg:px-12 overflow-hidden"
+      className="relative bg-[#f5f0eb] py-32 px-6 lg:px-12 overflow-x-hidden overflow-y-visible"
     >
       <DiagonalLines id="whyus-diag" color="rgba(26,22,17,0.04)" />
 
@@ -123,11 +126,11 @@ export function CulinWhyUs() {
       <div
         className="whyus-bg-text absolute inset-0 flex items-center justify-center pointer-events-none select-none"
         aria-hidden
-        style={{ top: "-30%" }}
+        style={{ top: "0%" }}
       >
         <span
           className="font-heading text-[#1a1611]/[0.03] whitespace-nowrap"
-          style={{ fontSize: "clamp(8rem, 18vw, 22rem)", lineHeight: 1 }}
+          style={{ fontSize: "clamp(5rem, 25vw, 22rem)", lineHeight: 1 }}
         >
           CULIN
         </span>

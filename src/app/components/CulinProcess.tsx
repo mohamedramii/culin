@@ -42,12 +42,17 @@ const steps = [
 export function CulinProcess() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const mobileLineRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>(".process-step");
+      const isMobile = window.innerWidth < 1024;
+      const cards = isMobile
+        ? gsap.utils.toArray<HTMLElement>(".mobile-step")
+        : gsap.utils.toArray<HTMLElement>(".desktop-step");
       const dots = gsap.utils.toArray<HTMLElement>(".process-connect-dot");
+      const mobileDots = gsap.utils.toArray<HTMLElement>(".mobile-dot");
 
       // Background grid animation
       gsap.to(".svg-dot-process-grid", {
@@ -60,54 +65,81 @@ export function CulinProcess() {
         ease: "sine.inOut",
       });
 
-      // Initial states: all cards hidden, all dots hidden
-      gsap.set(cards, { y: 80, opacity: 0 });
-      gsap.set(dots, { scale: 0, opacity: 0 });
+      if (isMobile) {
+        // ── MOBILE: Vertical timeline (no pin — natural scroll) ─────────────
+        gsap.set(cards, { x: 60, opacity: 0 });
+        gsap.set(mobileDots, { scale: 0, opacity: 0 });
 
-      // Pinned timeline: line fills + cards rise + dots appear
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 0%",
-          end: `+=${window.innerHeight * 4}`,
-          pin: true,
-          scrub: 1,
-        },
-      });
+        // Vertical line draws down with scroll
+        gsap.fromTo(mobileLineRef.current, { scaleY: 0 }, {
+          scaleY: 1, ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            end: "bottom 40%",
+            scrub: 1,
+          },
+        });
 
-      // Calculate each dot's position as a fraction of the line width
-      const lineEl = lineRef.current!;
-      const lineRect = lineEl.getBoundingClientRect();
-      const dotPositions = dots.map((dot) => {
-        const dotRect = dot.getBoundingClientRect();
-        return (dotRect.left + dotRect.width / 2 - lineRect.left) / lineRect.width;
-      });
+        // Each card + dot reveals when it scrolls into view
+        cards.forEach((card, i) => {
+          const cardTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top 80%",
+            },
+          });
+          cardTl.to(mobileDots[i], { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)" });
+          cardTl.to(card, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 0.1);
+        });
+      } else {
+        // ── DESKTOP: Horizontal timeline ────────────────────────────────────
+        gsap.set(cards, { y: 80, opacity: 0 });
+        gsap.set(dots, { scale: 0, opacity: 0 });
 
-      // Line reaches dot 0 at time 0, then extends to each next dot
-      tl.fromTo(lineEl, { scaleX: 0 }, { scaleX: dotPositions[0], ease: "none", duration: 0.8 }, 0);
-      for (let i = 1; i < dotPositions.length; i++) {
-        tl.to(lineEl, { scaleX: dotPositions[i], ease: "none", duration: 0.8 }, i);
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 0%",
+            end: `+=${window.innerHeight * 4}`,
+            pin: true,
+            scrub: 1,
+          },
+        });
+
+        const lineEl = lineRef.current!;
+        const lineRect = lineEl.getBoundingClientRect();
+        const dotPositions = dots.map((dot) => {
+          const dotRect = dot.getBoundingClientRect();
+          return (dotRect.left + dotRect.width / 2 - lineRect.left) / lineRect.width;
+        });
+
+        tl.fromTo(lineEl, { scaleX: 0 }, { scaleX: dotPositions[0], ease: "none", duration: 0.8 }, 0);
+        for (let i = 1; i < dotPositions.length; i++) {
+          tl.to(lineEl, { scaleX: dotPositions[i], ease: "none", duration: 0.8 }, i);
+        }
+
+        cards.forEach((card, i) => {
+          tl.to(card, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, i);
+          tl.to(dots[i], { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)" }, i);
+        });
       }
 
-      // Each card + dot reveals at its scroll position
-      cards.forEach((card, i) => {
-        tl.to(card, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, i);
-        tl.to(dots[i], { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)" }, i);
-      });
+      // Icon hover rotation (desktop only)
+      if (!isMobile) {
+        iconRefs.current.forEach((iconEl) => {
+          if (!iconEl) return;
+          const icon = iconEl.querySelector(".process-icon-inner");
+          if (!icon) return;
 
-      // Icon hover rotation
-      iconRefs.current.forEach((iconEl) => {
-        if (!iconEl) return;
-        const icon = iconEl.querySelector(".process-icon-inner");
-        if (!icon) return;
-
-        iconEl.addEventListener("mouseenter", () => {
-          gsap.to(icon, { rotateY: 360, duration: 0.6, ease: "power2.inOut" });
+          iconEl.addEventListener("mouseenter", () => {
+            gsap.to(icon, { rotateY: 360, duration: 0.6, ease: "power2.inOut" });
+          });
+          iconEl.addEventListener("mouseleave", () => {
+            gsap.to(icon, { rotateY: 0, duration: 0.6, ease: "power2.inOut" });
+          });
         });
-        iconEl.addEventListener("mouseleave", () => {
-          gsap.to(icon, { rotateY: 0, duration: 0.6, ease: "power2.inOut" });
-        });
-      });
+      }
     }, sectionRef);
 
     return () => {
@@ -131,6 +163,7 @@ export function CulinProcess() {
           </h2>
         </div>
 
+        {/* ── Desktop: Horizontal timeline ─────────────────────────────── */}
         <div className="hidden lg:block relative mb-16">
           <div className="h-px bg-white/10 w-full" />
           <div ref={lineRef} className="absolute top-0 left-0 h-px bg-[#c4a882] w-full origin-left" />
@@ -145,12 +178,48 @@ export function CulinProcess() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        {/* ── Mobile: Vertical timeline ─────────────────────────────────── */}
+        <div className="lg:hidden relative pl-10">
+          {/* Vertical line */}
+          <div className="absolute left-[11px] top-0 bottom-0 w-px bg-white/10" />
+          <div ref={mobileLineRef} className="absolute left-[11px] top-0 bottom-0 w-px bg-[#c4a882] origin-top" />
+
+          {/* Dots on the line */}
+          {steps.map((_, i) => (
+            <div
+              key={i}
+              className="mobile-dot absolute left-[5px] w-4 h-4 rounded-full bg-[#c4a882] border-2 border-[#1a1611]"
+              style={{ top: `${i * 25}%` }}
+            />
+          ))}
+
+          {/* Cards */}
+          <div className="flex flex-col gap-10">
+            {steps.map((s, i) => (
+              <div
+                key={s.num}
+                ref={(el) => { iconRefs.current[i] = el; }}
+                className="mobile-step process-step group"
+              >
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="w-10 h-10 border border-[#c4a882]/30 flex items-center justify-center group-hover:bg-[#c4a882]/10 group-hover:border-[#c4a882]/60 transition-all duration-500">
+                    <s.icon className="w-5 h-5 text-[#c4a882]" strokeWidth={1.2} />
+                  </div>
+                  <span className="font-heading text-[#c4a882]/30 text-xs">{s.num}</span>
+                </div>
+                <h3 className="font-heading text-white text-xl mb-2 group-hover:text-[#c4a882] transition-colors duration-500" style={{ lineHeight: 1.1 }}>{s.title}</h3>
+                <p className="font-body text-white/40 text-sm" style={{ fontWeight: 300, lineHeight: 1.8 }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Desktop: Cards grid ─────────────────────────────────────────── */}
+        <div className="hidden lg:grid grid-cols-5 gap-12">
           {steps.map((s, i) => (
             <div
               key={s.num}
-              ref={(el) => { iconRefs.current[i] = el; }}
-              className="process-step group cursor-hover"
+              className="desktop-step process-step group cursor-hover"
               style={{ perspective: "800px", transformStyle: "preserve-3d" }}
             >
               <div className="w-16 h-16 border border-[#c4a882]/30 flex items-center justify-center mb-6 group-hover:bg-[#c4a882]/10 group-hover:border-[#c4a882]/60 transition-all duration-500"
