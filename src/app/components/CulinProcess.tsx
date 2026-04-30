@@ -68,7 +68,7 @@ export function CulinProcess() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 10%",
+          start: "top 0%",
           end: `+=${window.innerHeight * 4}`,
           pin: true,
           scrub: 1,
