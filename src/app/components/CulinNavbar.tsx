@@ -13,7 +13,7 @@ const links: { label: string; href: string }[] = [
 
   { label: "About", href: "/" },
   { label: "Services", href: "/" },
-  { label: "Portfolio", href: "/" },
+  { label: "Portfolio", href: "/portfolio" },
   { label: "Process", href: "/" },
   { label: "Contact", href: "/" },
 ];

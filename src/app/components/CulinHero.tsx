@@ -160,7 +160,7 @@ export function CulinHero() {
           ref={subRef}
           className="font-body text-[#c4a882] text-xs tracking-[0.4em] uppercase mb-8 opacity-0"
         >
-          Kitchens & Dressing Rooms
+          Kitchens · Dressing Rooms · Custom Interiors
         </p>
 
         <h1
@@ -178,8 +178,7 @@ export function CulinHero() {
         <div className="mt-12 flex items-center gap-8">
           <div className="w-16 h-px bg-[#c4a882]/40" />
           <p className="font-body text-white/50 text-sm max-w-sm" style={{ fontWeight: 300, lineHeight: 1.7 }}>
-            Crafting bespoke interiors where natural wood meets modern design. Every space tells a story.
-          </p>
+Custom-designed interiors where natural wood meets modern precision. Kitchens, dressing rooms, TV units, and more — crafted for you.          </p>
           <div className="w-16 h-px bg-[#c4a882]/40" />
         </div>
 

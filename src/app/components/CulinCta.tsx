@@ -86,12 +86,17 @@ export function CulinCta() {
             className="cta-text font-heading text-white"
             style={{ fontSize: "clamp(2.5rem, 7vw, 5.5rem)", lineHeight: 0.95 }}
           >
-            Let's craft your<br />
+            Let's build your<br />
             <span className="italic text-[#c4a882]">dream space</span>
           </h2>
           <p className="cta-text font-body text-white/40 text-sm md:text-base mt-8 max-w-lg mx-auto" style={{ fontWeight: 300, lineHeight: 1.8 }}>
             Book a free design consultation. Share your vision and let our team create something extraordinary — tailored entirely to you.
           </p>
+          <div className="cta-text mt-4 flex items-center justify-center gap-3">
+            <span className="font-body text-[#c4a882]/70 text-sm tracking-wide">+20 103 484 2222</span>
+            <span className="text-white/20">·</span>
+            <span className="font-body text-white/30 text-sm">Cairo, Al Maryoutia</span>
+          </div>
           <div className="cta-text mt-10 flex items-center justify-center gap-4 flex-wrap">
             <Link
               to="/contact"
@@ -115,8 +120,16 @@ export function CulinCta() {
             <div className="md:col-span-2">
               <img src={new URL("../../assets/logo.png", import.meta.url).href} alt="Culin" className="h-12 w-auto" />
               <p className="font-body text-white/30 text-sm max-w-sm mt-4" style={{ fontWeight: 300, lineHeight: 1.8 }}>
-                More than wood. Crafting bespoke kitchens and dressing rooms that merge natural beauty with modern design.
-              </p>
+More than wood. Crafting bespoke kitchens, dressing rooms, TV units, and more — merging natural beauty with modern design.              </p>
+ <div className="mt-6 flex flex-col gap-2">
+                <a href="tel:+201034842222" className="font-body text-white/40 text-sm hover:text-[#c4a882] transition-colors" style={{ fontWeight: 300 }}>
+                  +20 103 484 2222
+                </a>
+                <span className="font-body text-white/30 text-sm" style={{ fontWeight: 300 }}>Cairo, Al Maryoutia, Egypt</span>
+                <a href="https://www.culingroup.com" target="_blank" rel="noopener noreferrer" className="font-body text-white/30 text-sm hover:text-[#c4a882] transition-colors" style={{ fontWeight: 300 }}>
+                  www.culingroup.com
+                </a>
+              </div>
             </div>
             <div>
               <h4 className="font-body text-white/60 text-xs tracking-[0.2em] uppercase mb-4" style={{ fontWeight: 500 }}>Navigation</h4>
@@ -129,7 +142,7 @@ export function CulinCta() {
                   // ["Contact", "/contact"],
                     ["About", "/"],
                   ["Services", "/"],
-                  ["Portfolio", "/"],
+                  ["Portfolio", "/portfolio"],
                   ["Process", "/"],
                   ["Contact", "/"],
                 ] as [string, string][]).map(([label, href]) => (

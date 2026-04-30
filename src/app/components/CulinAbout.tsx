@@ -60,9 +60,9 @@ export function CulinAbout() {
 
       // Counter animation
       const stats = [
-        { target: 15, suffix: "+" },
-        { target: 500, suffix: "+" },
-        { target: 100, suffix: "%" },
+        { target: 2023, suffix: "" },
+        { target: 100, suffix: "+" },
+        { target: 5, suffix: "" },
       ];
       counterRefs.current.forEach((el, i) => {
         if (!el) return;
@@ -119,22 +119,19 @@ export function CulinAbout() {
           {/* Left: Text */}
           <div>
             <h2 className="font-heading text-[#1a1611] mb-8" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05 }}>
-              <span className="about-heading-line block">Where nature</span>
-              <span className="about-heading-line block italic text-[#c4a882]">meets architecture</span>
+              <span className="about-heading-line block">Crafted for</span>
+              <span className="about-heading-line block italic text-[#c4a882]">modern living</span>
             </h2>
 
             <p className="about-body font-body text-[#1a1611]/60 text-sm max-w-md" style={{ fontWeight: 300, lineHeight: 1.8 }}>
-              Culin was born from a passion for authentic craftsmanship. We believe every kitchen
-              should inspire, every dressing room should delight. Our designs merge the raw beauty
-              of natural wood with precise, modern engineering — creating spaces that feel both
-              timeless and distinctly contemporary.
+              Culin is a leading provider of custom-designed kitchens, dressing rooms, and home interiors. Since our founding in 2023, we have specialized in transforming spaces into functional, elegant, and personalized environments. We combine luxury design with exceptional craftsmanship and affordable pricing — creating tailored solutions that enhance both the beauty and functionality of every home.
             </p>
 
             <div className="mt-12 grid grid-cols-3 gap-8">
               {[
-                { label: "Years Experience" },
+                { label: "Founded" },
                 { label: "Projects Delivered" },
-                { label: "Handcrafted" },
+                { label: "Unique Services" },
               ].map((s, i) => (
                 <div key={s.label} className="cursor-hover">
                   <span

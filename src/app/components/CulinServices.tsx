@@ -6,14 +6,18 @@ import { DiagonalLines, FloatingParticles } from "./SvgPatterns";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const IMG_KITCHEN = "https://images.unsplash.com/photo-1769326541179-1c496f7c5104?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraXRjaGVuJTIwaW50ZXJpb3IlMjB3aGl0ZSUyMG1vZGVybiUyMGVsZWdhbnR8ZW58MXx8fHwxNzc1NjY2NTUzfDA&ixlib=rb-4.1.0&q=80&w=1080";
-const IMG_DRESSING = "https://images.unsplash.com/photo-1765766600589-ddad380d6534?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd2FyZHJvYmUlMjBjbG9zZXQlMjBvcmdhbml6ZWR8ZW58MXx8fHwxNzc1NjY2NTUyfDA&ixlib=rb-4.1.0&q=80&w=1080";
-const IMG_BATHROOM = "https://images.unsplash.com/photo-1763485956236-397fc3f25d3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBiYXRocm9vbSUyMHZhbml0eSUyMHdvb2R8ZW58MXx8fHwxNzc1NjY2NTQ3fDA&ixlib=rb-4.1.0&q=80&w=1080";
+const IMG_KITCHEN = "https://images.unsplash.com/photo-1765371515651-faa86f08f0ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBsdXh1cnklMjBraXRjaGVuJTIwY2FiaW5ldHJ5JTIwd29vZCUyMGRlc2lnbnxlbnwxfHx8fDE3NzczNzE2NjB8MA&ixlib=rb-4.1.0&q=80&w=1080";
+const IMG_DRESSING = "https://images.unsplash.com/photo-1774301211236-dab64d553241?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd2Fsay1pbiUyMGNsb3NldCUyMGRyZXNzaW5nJTIwcm9vbSUyMHdhcmRyb2JlfGVufDF8fHx8MTc3NzM3MTY2MXww&ixlib=rb-4.1.0&q=80&w=1080";
+const IMG_BATHROOM = "https://images.unsplash.com/photo-1763485956294-407e7388f63b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYXRocm9vbSUyMHZhbml0eSUyMGNhYmluZXQlMjB3b29kJTIwbHV4dXJ5fGVufDF8fHx8MTc3NzM3MTY2M3ww&ixlib=rb-4.1.0&q=80&w=1080";
+const IMG_TV = "https://images.unsplash.com/photo-1774301266018-57c0b190ed43?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBUViUyMGVudGVydGFpbm1lbnQlMjB1bml0JTIwd29vZCUyMGxpdmluZyUyMHJvb218ZW58MXx8fHwxNzc3MzcxNjU3fDA&ixlib=rb-4.1.0&q=80&w=1080";
+const IMG_DOOR = "https://images.unsplash.com/photo-1664188371127-3a53ce32daaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjdXN0b20lMjB3b29kZW4lMjBkb29yJTIwaW50ZXJpb3IlMjBtb2Rlcm58ZW58MXx8fHwxNzc3MzcxNjU4fDA&ixlib=rb-4.1.0&q=80&w=1080";
 
 const services = [
-  { num: "01", title: "Kitchens", desc: "Functional elegance where every detail serves a purpose. From custom cabinetry to premium countertops, we create kitchens that inspire culinary artistry.", img: IMG_KITCHEN },
-  { num: "02", title: "Dressing Rooms", desc: "Your personal sanctuary, meticulously designed. Walk-in closets and wardrobes that transform your daily routine into a luxury experience.", img: IMG_DRESSING },
-  { num: "03", title: "Custom Interiors", desc: "Beyond kitchens and closets — we craft bespoke vanities, shelving systems, and architectural woodwork that elevates every room.", img: IMG_BATHROOM },
+  { num: "01", title: "Custom Kitchen Designs", desc: "We create bespoke kitchen designs that combine luxury, functionality, and personalized style to fit your unique space — from custom cabinetry to premium countertops.", img: IMG_KITCHEN },
+  { num: "02", title: "Dressing Rooms & Storage", desc: "Our custom dressing rooms offer tailored storage solutions that enhance organization and add elegance to your space. Your personal sanctuary, meticulously designed.", img: IMG_DRESSING },
+  { num: "03", title: "Custom Bathroom Cabinets", desc: "We provide stylish, practical custom bathroom cabinets designed to optimize space and ensure lasting durability with premium wood finishes.", img: IMG_BATHROOM },
+  { num: "04", title: "TV Units & Entertainment Centers", desc: "Our custom TV units and entertainment centers blend modern design with functional storage to enhance your living space with precision and quality.", img: IMG_TV },
+  { num: "05", title: "Custom Wooden Doors", desc: "Custom wooden doors and complementary woodwork solutions, designed to match each space with precision and quality — adding character to every entrance.", img: IMG_DOOR },
 ];
 
 export function CulinServices() {
@@ -85,7 +89,7 @@ export function CulinServices() {
           <span className="font-body text-white/40 text-xs tracking-[0.3em] uppercase">What We Do</span>
         </div>
         <h2 className="font-heading text-white mb-20" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1.05 }}>
-          Crafted for <span className="italic text-[#c4a882]">living</span>
+          Crafted for <span className="italic text-[#c4a882]">every space</span>
         </h2>
 
         <div className="flex flex-col gap-0">

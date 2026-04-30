@@ -1,16 +1,42 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Compass, PenTool, Hammer, CheckCircle } from "lucide-react";
+import { MessageCircle, PenTool, CheckSquare, Hammer, Star } from "lucide-react";
 import { GeometricGrid } from "./SvgPatterns";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
-  { icon: Compass, num: "01", title: "Discovery", desc: "We listen to your vision, study your space, and understand how you live. Every great design starts with the right questions." },
-  { icon: PenTool, num: "02", title: "Design", desc: "Our designers create detailed 3D visualizations, material selections, and technical drawings — refining until every detail is perfect." },
-  { icon: Hammer, num: "03", title: "Crafting", desc: "Master artisans bring designs to life using premium hardwoods and precision engineering. Every joint, every surface, handcrafted." },
-  { icon: CheckCircle, num: "04", title: "Installation", desc: "Our team installs with surgical precision. We don't leave until every handle, hinge, and panel is flawless." },
+  {
+    icon: MessageCircle,
+    num: "01",
+    title: "Consultation & Discovery",
+    desc: "We listen, gather insights, and discuss your ideas to fully understand your needs and space.",
+  },
+  {
+    icon: PenTool,
+    num: "02",
+    title: "Custom Design & Planning",
+    desc: "We craft personalized layouts focused on functionality, aesthetics, and smart use of space.",
+  },
+  {
+    icon: CheckSquare,
+    num: "03",
+    title: "Approval & Materials",
+    desc: "We walk you through materials and finishes until you're fully satisfied, then move forward.",
+  },
+  {
+    icon: Hammer,
+    num: "04",
+    title: "Manufacturing & Crafting",
+    desc: "We craft your custom unit with premium materials and precise attention to detail.",
+  },
+  {
+    icon: Star,
+    num: "05",
+    title: "Installation & Quality Check",
+    desc: "Our team installs your design and conducts a thorough quality check for a flawless finish.",
+  },
 ];
 
 export function CulinProcess() {
@@ -18,9 +44,12 @@ export function CulinProcess() {
   const lineRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Grid pattern shimmer
+      const cards = gsap.utils.toArray<HTMLElement>(".process-step");
+      const dots = gsap.utils.toArray<HTMLElement>(".process-connect-dot");
+
+      // Background grid animation
       gsap.to(".svg-dot-process-grid", {
         opacity: 0.6,
         scale: 1.5,
@@ -31,30 +60,42 @@ export function CulinProcess() {
         ease: "sine.inOut",
       });
 
-      // Progress line with scroll
-      gsap.fromTo(
-        lineRef.current,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 60%", end: "bottom 60%", scrub: 1 },
-        }
-      );
+      // Initial states: all cards hidden, all dots hidden
+      gsap.set(cards, { y: 80, opacity: 0 });
+      gsap.set(dots, { scale: 0, opacity: 0 });
 
-      // Steps entrance with 3D
-      gsap.utils.toArray<HTMLElement>(".process-step").forEach((step, i) => {
-        gsap.fromTo(
-          step,
-          { y: 80, opacity: 0, rotateY: 20, scale: 0.9 },
-          {
-            y: 0, opacity: 1, rotateY: 0, scale: 1, duration: 1, ease: "power3.out",
-            scrollTrigger: { trigger: step, start: "top 85%" },
-          }
-        );
+      // Pinned timeline: line fills + cards rise + dots appear
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 10%",
+          end: `+=${window.innerHeight * 4}`,
+          pin: true,
+          scrub: 1,
+        },
       });
 
-      // Icon continuous rotation on hover area
+      // Calculate each dot's position as a fraction of the line width
+      const lineEl = lineRef.current!;
+      const lineRect = lineEl.getBoundingClientRect();
+      const dotPositions = dots.map((dot) => {
+        const dotRect = dot.getBoundingClientRect();
+        return (dotRect.left + dotRect.width / 2 - lineRect.left) / lineRect.width;
+      });
+
+      // Line reaches dot 0 at time 0, then extends to each next dot
+      tl.fromTo(lineEl, { scaleX: 0 }, { scaleX: dotPositions[0], ease: "none", duration: 0.8 }, 0);
+      for (let i = 1; i < dotPositions.length; i++) {
+        tl.to(lineEl, { scaleX: dotPositions[i], ease: "none", duration: 0.8 }, i);
+      }
+
+      // Each card + dot reveals at its scroll position
+      cards.forEach((card, i) => {
+        tl.to(card, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, i);
+        tl.to(dots[i], { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)" }, i);
+      });
+
+      // Icon hover rotation
       iconRefs.current.forEach((iconEl) => {
         if (!iconEl) return;
         const icon = iconEl.querySelector(".process-icon-inner");
@@ -67,24 +108,16 @@ export function CulinProcess() {
           gsap.to(icon, { rotateY: 0, duration: 0.6, ease: "power2.inOut" });
         });
       });
-
-      // Connecting dots animation
-      gsap.fromTo(
-        ".process-connect-dot",
-        { scale: 0, opacity: 0 },
-        {
-          scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.2,
-          scrollTrigger: { trigger: ".process-connect-dot", start: "top 85%" },
-        }
-      );
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
   }, []);
 
   return (
     <section ref={sectionRef} id="process" className="relative bg-[#1a1611] py-32 px-6 lg:px-12 overflow-hidden">
-      {/* SVG Pattern */}
       <GeometricGrid id="process-grid" color="rgba(196,168,130,0.03)" />
 
       <div className="relative max-w-7xl mx-auto">
@@ -99,11 +132,9 @@ export function CulinProcess() {
           </h2>
         </div>
 
-        {/* Progress line */}
         <div className="hidden lg:block relative mb-16">
           <div className="h-px bg-white/10 w-full" />
           <div ref={lineRef} className="absolute top-0 left-0 h-px bg-[#c4a882] w-full origin-left" />
-          {/* Connection dots */}
           <div className="absolute top-0 left-0 w-full flex justify-between -translate-y-1/2">
             {steps.map((_, i) => (
               <div
@@ -115,7 +146,7 @@ export function CulinProcess() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {steps.map((s, i) => (
             <div
               key={s.num}
