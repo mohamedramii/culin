@@ -112,7 +112,6 @@ export function CulinProcess() {
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
 
